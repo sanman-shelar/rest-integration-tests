@@ -12,6 +12,14 @@ public class Mapper {
       final Class<T> clazz) throws IOException {
     final String jsonFromResponse = EntityUtils.toString(response.getEntity());
     final ObjectMapper mapper =
+        new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);    
+    return mapper.readValue(jsonFromResponse, clazz);
+  }
+  
+  public static <T> T retrieveResourceFromRootResponse(final HttpResponse response,
+      final Class<T> clazz) throws IOException {
+    final String jsonFromResponse = EntityUtils.toString(response.getEntity());
+    final ObjectMapper mapper =
         new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
     return mapper.readValue(jsonFromResponse, clazz);
